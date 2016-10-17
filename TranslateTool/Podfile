@@ -1,0 +1,18 @@
+# Uncomment this line to define a global platform for your project
+platform :ios, '8.0'
+
+# Uncomment this line if you're using Swift
+
+use_frameworks!
+
+target 'TranslateTool' do
+
+pod "Appirater"  #评分 https://github.com/arashpayan/appirater
+pod 'Localize-Swift', '~> 1.6'
+pod 'iVersion' #版本记录，提示有没有新版本 https://github.com/nicklockwood/iVersion
+pod "MagicalRecord"
+pod "MagicalRecord/CocoaLumberjack"
+pod 'SwiftyJSON'
+
+end
+

@@ -1,0 +1,37 @@
+PODS:
+  - Appirater (2.0.5)
+  - CocoaLumberjack (2.4.0):
+    - CocoaLumberjack/Default (= 2.4.0)
+    - CocoaLumberjack/Extensions (= 2.4.0)
+  - CocoaLumberjack/Core (2.4.0)
+  - CocoaLumberjack/Default (2.4.0):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.4.0):
+    - CocoaLumberjack/Default
+  - iVersion (1.11.4)
+  - Localize-Swift (1.6)
+  - MagicalRecord (2.3.2):
+    - MagicalRecord/Core (= 2.3.2)
+  - MagicalRecord/CocoaLumberjack (2.3.2):
+    - CocoaLumberjack (~> 2.0)
+    - MagicalRecord/Core
+  - MagicalRecord/Core (2.3.2)
+  - SwiftyJSON (3.1.1)
+
+DEPENDENCIES:
+  - Appirater
+  - iVersion
+  - Localize-Swift (~> 1.6)
+  - MagicalRecord
+  - MagicalRecord/CocoaLumberjack
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
+  CocoaLumberjack: aa9dcab71bdf9eaf2a63bbd9ddc87863efe45457
+  iVersion: 2b6ffe708672cb494ba3cab150a94800c2892e81
+  Localize-Swift: d34c70b34ffb1468b2942c3f0b5c1dfd9119877e
+  MagicalRecord: 53bed74b4323b930992a725be713e53b37d19755
+  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+
+COCOAPODS: 0.39.0

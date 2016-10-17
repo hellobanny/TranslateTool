@@ -1,0 +1,6 @@
+framework module Pods_TranslateTool {
+  umbrella header "Pods-TranslateTool-umbrella.h"
+
+  export *
+  module * { export * }
+}
