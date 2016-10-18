@@ -17,6 +17,7 @@ PODS:
     - MagicalRecord/Core
   - MagicalRecord/Core (2.3.2)
   - SwiftyJSON (3.1.1)
+  - Zip (0.6.0)
 
 DEPENDENCIES:
   - Appirater
@@ -25,6 +26,7 @@ DEPENDENCIES:
   - MagicalRecord
   - MagicalRecord/CocoaLumberjack
   - SwiftyJSON
+  - Zip (~> 0.6)
 
 SPEC CHECKSUMS:
   Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
@@ -33,5 +35,6 @@ SPEC CHECKSUMS:
   Localize-Swift: d34c70b34ffb1468b2942c3f0b5c1dfd9119877e
   MagicalRecord: 53bed74b4323b930992a725be713e53b37d19755
   SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+  Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
 
 COCOAPODS: 0.39.0

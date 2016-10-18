@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import MessageUI
 
 class ChooseTargetLanguagesTC: UITableViewController {
     
     var languages:[Language]!
     var choosed:[Language]!
+    
+    var startParedButton:UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +35,47 @@ class ChooseTargetLanguagesTC: UITableViewController {
         self.languages = langs
         self.choosed = [Language]()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start", style: UIBarButtonItemStyle.done, target: self, action: #selector(ChooseTargetLanguagesTC.startTranslate))
+        startParedButton = UIBarButtonItem(title: "Start", style: UIBarButtonItemStyle.done, target: self, action: #selector(ChooseTargetLanguagesTC.startTranslate))
+        self.navigationItem.rightBarButtonItem = startParedButton
+        startParedButton.isEnabled = false
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ChooseTargetLanguagesTC.translateDone(notify:)), name: ZipFileDown, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChooseTargetLanguagesTC.progressUpdate), name: TranslateDone, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func progressUpdate(){
+    
+    }
+    
+    func translateDone(notify:Notification){
+        //send back by email
+        guard let url = notify.object as? URL else {
+            return
+        }
+        do {
+            let data = try Data(contentsOf:url)
+            let mail = MFMailComposeViewController()
+            mail.addAttachmentData(data, mimeType: "public.data", fileName: "archive.zip")
+            mail.setSubject("Translate result")
+            let msg = "\(TranslateManager.sharedInstance().getDetailInfo()) \n Send attachment to yourself!"
+            mail.setMessageBody(msg, isHTML: false)
+            mail.mailComposeDelegate = self
+            self.present(mail, animated: true, completion: nil)
+        }
+        catch(_){
+        }
+        
     }
     
     func startTranslate() {
         if choosed.count == 0 {
             return
         }
+        startParedButton.isEnabled = false
         let tm = TranslateManager.sharedInstance()
         tm.targetLangs = choosed
         _ = tm.startTranslate()
@@ -84,6 +121,7 @@ class ChooseTargetLanguagesTC: UITableViewController {
         else {
             choosed.append(lan)
         }
+        startParedButton.isEnabled = choosed.count > 0
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
 
@@ -131,5 +169,10 @@ class ChooseTargetLanguagesTC: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
 
+extension ChooseTargetLanguagesTC:MFMailComposeViewControllerDelegate, UINavigationControllerDelegate{
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }

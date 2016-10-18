@@ -45,7 +45,6 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         webView.frame = self.view.frame
-        print(self.view.frame)
     }
     
     func loadLocalFile(_ name:String,type:String){

@@ -13,6 +13,7 @@ pod 'iVersion' #版本记录，提示有没有新版本 https://github.com/nickl
 pod "MagicalRecord"
 pod "MagicalRecord/CocoaLumberjack"
 pod 'SwiftyJSON'
+pod 'Zip', '~> 0.6'
 
 end
 

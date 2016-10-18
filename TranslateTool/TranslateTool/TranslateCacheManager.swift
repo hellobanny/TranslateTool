@@ -24,6 +24,16 @@ class TranslateCacheManager: NSObject {
         }
     }
     
+    func printAllCache() {
+        if let array = Translate.mr_findAll() as? [Translate] {
+            for ts in array {
+                print(ts.text)
+                print(ts.lang)
+                print(ts.translate)
+            }
+        }
+    }
+    
     open func getCached(text:String,lang:Language) -> String? {
         if let cache = Translate.mr_findFirst(with: NSPredicate(format: "text = \"%@\" and lang = \"%@\"", text,lang.getShortName())){
             if let dt = cache.time as? Date {
@@ -39,12 +49,14 @@ class TranslateCacheManager: NSObject {
         if let cache = Translate.mr_findFirst(with: NSPredicate(format: "text = \"%@\" and lang = \"%@\"", text,lang.getShortName())){
             cache.translate = trans
             cache.time = NSDate()
+            NSManagedObjectContext.mr_default().mr_saveToPersistentStoreAndWait()
         }
         else if let tr = Translate.mr_createEntity() {
             tr.text = text
             tr.lang = lang.getShortName()
             tr.translate = trans
             tr.time = NSDate()
+            NSManagedObjectContext.mr_default().mr_saveToPersistentStoreAndWait()
             return tr
         }
         return nil

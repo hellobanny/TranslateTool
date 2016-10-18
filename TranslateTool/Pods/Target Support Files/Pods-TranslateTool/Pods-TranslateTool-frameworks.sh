@@ -89,6 +89,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-TranslateTool/Localize_Swift.framework"
   install_framework "Pods-TranslateTool/MagicalRecord.framework"
   install_framework "Pods-TranslateTool/SwiftyJSON.framework"
+  install_framework "Pods-TranslateTool/Zip.framework"
   install_framework "Pods-TranslateTool/iVersion.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -97,5 +98,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-TranslateTool/Localize_Swift.framework"
   install_framework "Pods-TranslateTool/MagicalRecord.framework"
   install_framework "Pods-TranslateTool/SwiftyJSON.framework"
+  install_framework "Pods-TranslateTool/Zip.framework"
   install_framework "Pods-TranslateTool/iVersion.framework"
 fi

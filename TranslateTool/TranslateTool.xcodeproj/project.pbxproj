@@ -21,12 +21,14 @@
 		5157DB871DB4B4DA0064CF3D /* ChooseSourceLanguageTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157DB861DB4B4DA0064CF3D /* ChooseSourceLanguageTC.swift */; };
 		5157DB891DB4B4F70064CF3D /* ChooseTargetLanguagesTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157DB881DB4B4F70064CF3D /* ChooseTargetLanguagesTC.swift */; };
 		5157DB8C1DB4BDE90064CF3D /* TranslateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157DB8B1DB4BDE90064CF3D /* TranslateManager.swift */; };
+		5157DB8E1DB4C8210064CF3D /* TranslateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5157DB8D1DB4C8210064CF3D /* TranslateItem.swift */; };
 		6D3F2776DDFDE3B4F9FA8CE5 /* Pods_TranslateTool.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB63886E9A765D5F5B0D1795 /* Pods_TranslateTool.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		26CBD2279E8997177A18FBC0 /* Pods-TranslateTool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslateTool.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TranslateTool/Pods-TranslateTool.debug.xcconfig"; sourceTree = "<group>"; };
 		2E3305415BFE0B1687E3B15A /* Pods-TranslateTool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslateTool.release.xcconfig"; path = "Pods/Target Support Files/Pods-TranslateTool/Pods-TranslateTool.release.xcconfig"; sourceTree = "<group>"; };
+		51248C3B1DB609CC00657885 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		5157DB421DB465DE0064CF3D /* TranslateTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslateTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5157DB451DB465DE0064CF3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5157DB471DB465DE0064CF3D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -43,6 +45,7 @@
 		5157DB861DB4B4DA0064CF3D /* ChooseSourceLanguageTC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseSourceLanguageTC.swift; sourceTree = "<group>"; };
 		5157DB881DB4B4F70064CF3D /* ChooseTargetLanguagesTC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseTargetLanguagesTC.swift; sourceTree = "<group>"; };
 		5157DB8B1DB4BDE90064CF3D /* TranslateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslateManager.swift; sourceTree = "<group>"; };
+		5157DB8D1DB4C8210064CF3D /* TranslateItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslateItem.swift; sourceTree = "<group>"; };
 		BB63886E9A765D5F5B0D1795 /* Pods_TranslateTool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TranslateTool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -81,13 +84,14 @@
 			children = (
 				5157DB831DB4B35B0064CF3D /* Resources */,
 				5157DB821DB472CF0064CF3D /* Data */,
-				5157DB451DB465DE0064CF3D /* AppDelegate.swift */,
 				5157DB8A1DB4B5040064CF3D /* VC */,
+				5157DB451DB465DE0064CF3D /* AppDelegate.swift */,
 				5157DB491DB465DE0064CF3D /* Main.storyboard */,
 				5157DB4C1DB465DF0064CF3D /* Assets.xcassets */,
 				5157DB4E1DB465DF0064CF3D /* LaunchScreen.storyboard */,
 				5157DB511DB465DF0064CF3D /* Info.plist */,
 				5157DB771DB46B4F0064CF3D /* LocalDB.xcdatamodeld */,
+				51248C3B1DB609CC00657885 /* MyPlayground.playground */,
 			);
 			path = TranslateTool;
 			sourceTree = "<group>";
@@ -100,6 +104,7 @@
 				5157DB801DB472C70064CF3D /* TranslateCacheManager.swift */,
 				5157DB7A1DB46BE10064CF3D /* Language.swift */,
 				5157DB8B1DB4BDE90064CF3D /* TranslateManager.swift */,
+				5157DB8D1DB4C8210064CF3D /* TranslateItem.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -270,6 +275,7 @@
 				5157DB8C1DB4BDE90064CF3D /* TranslateManager.swift in Sources */,
 				5157DB7B1DB46BE10064CF3D /* Language.swift in Sources */,
 				5157DB791DB46B4F0064CF3D /* LocalDB.xcdatamodeld in Sources */,
+				5157DB8E1DB4C8210064CF3D /* TranslateItem.swift in Sources */,
 				5157DB871DB4B4DA0064CF3D /* ChooseSourceLanguageTC.swift in Sources */,
 				5157DB891DB4B4F70064CF3D /* ChooseTargetLanguagesTC.swift in Sources */,
 				5157DB461DB465DE0064CF3D /* AppDelegate.swift in Sources */,
