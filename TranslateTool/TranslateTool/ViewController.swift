@@ -27,6 +27,11 @@ class ViewController: UIViewController {
         }
         loadLocalFile("help", type: "html")
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.openUrl(notifi:)), name: OpenNewStringFile, object: nil)
+        if GoogleAPIKey.characters.count < 10 {
+            let av = UIAlertController(title: "Notice", message: "Please set your own Googel Translate Code!", preferredStyle: UIAlertControllerStyle.alert)
+            av.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.cancel, handler: nil))
+            self.present(av, animated: true, completion: nil)
+        }
     }
     
     deinit {

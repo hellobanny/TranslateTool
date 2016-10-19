@@ -15,9 +15,6 @@ struct NeedTranslate {
     var comment:String
 }
 
-let GoogleAPIKey = ""
-let GoogleTranslateURL = "https://www.googleapis.com/language/translate/v2"
-
 class TranslateItem: NSObject {
     
     var translate:NeedTranslate
@@ -60,7 +57,7 @@ class TranslateItem: NSObject {
                         self.result = str
                         TranslateCacheManager.sharedInstance().cache(text: self.translate.text, lang: self.toLang, trans: str)
                         NotificationCenter.default.post(name: TranslateDone, object: nil)
-                        //print(self.getFinalResult())
+                        print(self.getFinalResult())
                         return
                     }
                 }

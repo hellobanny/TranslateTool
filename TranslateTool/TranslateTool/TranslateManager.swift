@@ -9,10 +9,13 @@
 import UIKit
 import Zip
 
-private let instance = TranslateManager()
+let GoogleAPIKey = ""
+let GoogleTranslateURL = "https://www.googleapis.com/language/translate/v2"
 
 let TranslateDone = Notification.Name("TranslateDone")
 let ZipFileDown = Notification.Name("ZipFileDown")
+
+private let instance = TranslateManager()
 
 class TranslateManager: NSObject {
     

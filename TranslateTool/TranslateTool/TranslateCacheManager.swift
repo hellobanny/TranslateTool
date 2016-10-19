@@ -35,7 +35,8 @@ class TranslateCacheManager: NSObject {
     }
     
     open func getCached(text:String,lang:Language) -> String? {
-        if let cache = Translate.mr_findFirst(with: NSPredicate(format: "text = \"%@\" and lang = \"%@\"", text,lang.getShortName())){
+        let predicate = NSPredicate(format: "(text = %@) AND (lang = %@)", text,lang.getShortName())
+        if let cache = Translate.mr_findFirst(with: predicate ,in:NSManagedObjectContext.mr_default()){
             if let dt = cache.time as? Date {
                 if Date().timeIntervalSince(dt) < CacheTimeOut {
                     return cache.translate
@@ -46,17 +47,19 @@ class TranslateCacheManager: NSObject {
     }
     
     @discardableResult open func cache(text:String,lang:Language,trans:String) -> Translate? {
-        if let cache = Translate.mr_findFirst(with: NSPredicate(format: "text = \"%@\" and lang = \"%@\"", text,lang.getShortName())){
+        let cc = NSManagedObjectContext.mr_default()
+        let predicate = NSPredicate(format: "(text = %@) AND (lang = %@)", text,lang.getShortName())
+        if let cache = Translate.mr_findFirst(with: predicate, in: cc){
             cache.translate = trans
             cache.time = NSDate()
-            NSManagedObjectContext.mr_default().mr_saveToPersistentStoreAndWait()
+            cc.mr_saveToPersistentStoreAndWait()
         }
-        else if let tr = Translate.mr_createEntity() {
+        else if let tr = Translate.mr_createEntity(in: cc){
             tr.text = text
             tr.lang = lang.getShortName()
             tr.translate = trans
             tr.time = NSDate()
-            NSManagedObjectContext.mr_default().mr_saveToPersistentStoreAndWait()
+            cc.mr_saveToPersistentStoreAndWait()
             return tr
         }
         return nil
