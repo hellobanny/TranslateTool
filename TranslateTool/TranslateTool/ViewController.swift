@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize_Swift
 
 class ViewController: UIViewController {
 
@@ -16,7 +17,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "Notice".localized()
         webView = UIWebView(frame: self.view.frame)
         self.view.addSubview(webView)
         let top = NSLayoutConstraint(item: webView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0)
@@ -25,11 +26,11 @@ class ViewController: UIViewController {
         if (targetUrl != nil) {
             webView.loadRequest(URLRequest(url: targetUrl))
         }
-        loadLocalFile("help", type: "html")
+        loadLocalFile("help-en".localized(), type: "html")
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.openUrl(notifi:)), name: OpenNewStringFile, object: nil)
         if GoogleAPIKey.characters.count < 10 {
-            let av = UIAlertController(title: "Notice", message: "Please set your own Googel Translate Code!", preferredStyle: UIAlertControllerStyle.alert)
-            av.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.cancel, handler: nil))
+            let av = UIAlertController(title: "Notice".localized(), message: "Please set your own Googel Translate API key!".localized(), preferredStyle: UIAlertControllerStyle.alert)
+            av.addAction(UIAlertAction(title: "Done".localized(), style: UIAlertActionStyle.cancel, handler: nil))
             self.present(av, animated: true, completion: nil)
         }
     }

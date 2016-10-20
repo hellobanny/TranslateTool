@@ -11,9 +11,10 @@ import Zip
 
 let GoogleAPIKey = ""
 let GoogleTranslateURL = "https://www.googleapis.com/language/translate/v2"
+let FinalFileName = "Archive.zip"
 
-let TranslateDone = Notification.Name("TranslateDone")
-let ZipFileDown = Notification.Name("ZipFileDown")
+let OneTranslateDone = Notification.Name("OneTranslateDone")
+let AllTranslateDone = Notification.Name("AllTranslateDone")
 
 private let instance = TranslateManager()
 
@@ -26,6 +27,7 @@ class TranslateManager: NSObject {
     
     var allTranslateItems = [TranslateItem]()
     var translateCount = 0
+    var needTranslateOnline = 0
     
     class func sharedInstance() -> TranslateManager {
         return instance
@@ -34,6 +36,7 @@ class TranslateManager: NSObject {
     func startTranslate() -> Bool {
         //读取文件
         let sources = parseSourceStringsFile()
+        
         if sources.count == 0 {
             return false
         }
@@ -45,7 +48,7 @@ class TranslateManager: NSObject {
         allTranslateItems.removeAll()
         
         var count = 0
-        
+        var textCount = 0
         for lan in targetLangs {
             for need in sources {
                 let trans = TranslateItem(trans: need, from: sLan, to: lan)
@@ -54,35 +57,45 @@ class TranslateManager: NSObject {
                 }
                 else {
                     count += 1
+                    textCount += need.text.characters.count
                 }
                 allTranslateItems.append(trans)
             }
         }
+        print("Total need translate is \(textCount)")
+        if textCount > 10000 {
+            return false
+        }
         //获取翻译
         translateCount = count
-        NotificationCenter.default.addObserver(self, selector: #selector(TranslateManager.oneDone), name: TranslateDone, object: nil)
+        needTranslateOnline = count
+        NotificationCenter.default.addObserver(self, selector: #selector(TranslateManager.oneTranslateDone), name: OneTranslateDone, object: nil)
         if translateCount > 0 {
             for trans in allTranslateItems {
                 trans.startQuery()
             }
         }
         else {
-            oneDone()
+            oneTranslateDone()
         }
         
         return true
     }
     
-    func oneDone(){
+    func oneTranslateDone(){
         lock.lock()
         translateCount -= 1
         if translateCount <= 0 {//全部完成了
-            NotificationCenter.default.removeObserver(self, name: TranslateDone, object: nil)
+            NotificationCenter.default.removeObserver(self, name: OneTranslateDone, object: nil)
             if let url = self.writeToFilesAndZipped() {
-                NotificationCenter.default.post(name: ZipFileDown, object: url)
+                NotificationCenter.default.post(name: AllTranslateDone, object: url)
             }
         }
         lock.unlock()
+    }
+    
+    func getProcesss() -> Float {
+        return Float(needTranslateOnline - translateCount)/Float(needTranslateOnline)
     }
     
     //输出到文件，文件夹，打包压缩，返回URL
@@ -100,42 +113,43 @@ class TranslateManager: NSObject {
             }
         }
         //输入到新文件
-        var dic:[Language:NSMutableArray] = Dictionary()
+        var groupedDic:[Language:NSMutableArray] = Dictionary()
         for item in allTranslateItems {
             let key = item.toLang
-            if let array = dic[key] {
+            if let array = groupedDic[key] {
                 array.add(item)
             }
             else {
                 let arr = NSMutableArray()
                 arr.add(item)
-                dic[key] = arr
+                groupedDic[key] = arr
             }
         }
         
         do {
             try fm.createDirectory(atPath: folder, withIntermediateDirectories: true, attributes: nil)
             for lang in targetLangs {
-                let proj = folder + "/" + lang.getFolderName()
-                try fm.createDirectory(atPath: proj, withIntermediateDirectories: true, attributes: nil)
-                if let array = dic[lang] {
-                    array.sort(comparator: { (i1, i2) -> ComparisonResult in
+                let projPath = folder + "/" + lang.getFolderName()
+                try fm.createDirectory(atPath: projPath, withIntermediateDirectories: true, attributes: nil)
+                if let sameLangItems = groupedDic[lang] {
+                    sameLangItems.sort(comparator: { (i1, i2) -> ComparisonResult in
                         let p1 = i1 as! TranslateItem
                         let p2 = i2 as! TranslateItem
                         return p1.translate.key.compare(p2.translate.key)
                     })
-                    let fileName = proj.appending("/Localizable.strings")
+                    let fileName = projPath.appending("/Localizable.strings")
                     let result = NSMutableString()
-                    for item in array {
+                    for item in sameLangItems {
                         let it = item as! TranslateItem
                         result.append(it.getFinalResult())
                     }
                     try result.write(toFile: fileName, atomically: true, encoding: String.Encoding.utf8.rawValue)
-                    print(result)
+                    //print(result)
                 }
                 
             }
-            let zipFilePath = path.appending("/archive.zip")
+            //打包
+            let zipFilePath = path.appending("/\(FinalFileName)")
             let zipFileUrl = URL(fileURLWithPath:zipFilePath)
             try Zip.zipFiles(paths: [URL(fileURLWithPath:folder)], zipFilePath: zipFileUrl, password: nil, progress: nil)
             return zipFileUrl

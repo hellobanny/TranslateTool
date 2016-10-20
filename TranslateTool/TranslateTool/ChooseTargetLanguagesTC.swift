@@ -8,6 +8,9 @@
 
 import UIKit
 import MessageUI
+import SVProgressHUD
+
+let MaxTranslateLanguagesOnce = 4
 
 class ChooseTargetLanguagesTC: UITableViewController {
     
@@ -24,7 +27,7 @@ class ChooseTargetLanguagesTC: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        self.title = "Choose target languages"
+        self.title = "Choose target languages".localized()
         
         var langs = Language.getAllLanguages()
         if let lan = TranslateManager.sharedInstance().sourceLang {
@@ -35,23 +38,40 @@ class ChooseTargetLanguagesTC: UITableViewController {
         self.languages = langs
         self.choosed = [Language]()
         
-        startParedButton = UIBarButtonItem(title: "Start", style: UIBarButtonItemStyle.done, target: self, action: #selector(ChooseTargetLanguagesTC.startTranslate))
+        startParedButton = UIBarButtonItem(title: "Start".localized(), style: UIBarButtonItemStyle.done, target: self, action: #selector(ChooseTargetLanguagesTC.startTranslate))
         self.navigationItem.rightBarButtonItem = startParedButton
         startParedButton.isEnabled = false
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChooseTargetLanguagesTC.translateDone(notify:)), name: ZipFileDown, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChooseTargetLanguagesTC.progressUpdate), name: TranslateDone, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChooseTargetLanguagesTC.translateDone(notify:)), name: AllTranslateDone, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChooseTargetLanguagesTC.progressUpdate), name: OneTranslateDone, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func progressUpdate(){
+    func startTranslate() {
+        if choosed.count == 0 {
+            return
+        }
+        SVProgressHUD.showProgress(0)
+        startParedButton.isEnabled = false
+        let tm = TranslateManager.sharedInstance()
+        tm.targetLangs = choosed
+        if !tm.startTranslate(){
+            let av = UIAlertController(title: "Notice".localized(), message: "The characters is more than 10,000. It's too expensive.".localized(), preferredStyle: UIAlertControllerStyle.alert)
+            av.addAction(UIAlertAction(title: "Done".localized(), style: UIAlertActionStyle.cancel, handler: nil))
+            self.present(av, animated: true, completion: nil)
+            return
+        }
+    }
     
+    func progressUpdate(){
+        SVProgressHUD.showProgress(TranslateManager.sharedInstance().getProcesss())
     }
     
     func translateDone(notify:Notification){
+        SVProgressHUD.dismiss()
         //send back by email
         guard let url = notify.object as? URL else {
             return
@@ -59,9 +79,9 @@ class ChooseTargetLanguagesTC: UITableViewController {
         do {
             let data = try Data(contentsOf:url)
             let mail = MFMailComposeViewController()
-            mail.addAttachmentData(data, mimeType: "public.data", fileName: "archive.zip")
-            mail.setSubject("Translate result")
-            let msg = "\(TranslateManager.sharedInstance().getDetailInfo()) \n Send attachment to yourself!"
+            mail.addAttachmentData(data, mimeType: "public.data", fileName: FinalFileName)
+            mail.setSubject("Translate result".localized())
+            let msg = "***Send attachment to yourself!***\n \(TranslateManager.sharedInstance().getDetailInfo())"
             mail.setMessageBody(msg, isHTML: false)
             mail.mailComposeDelegate = self
             self.present(mail, animated: true, completion: nil)
@@ -71,16 +91,6 @@ class ChooseTargetLanguagesTC: UITableViewController {
         
     }
     
-    func startTranslate() {
-        if choosed.count == 0 {
-            return
-        }
-        startParedButton.isEnabled = false
-        let tm = TranslateManager.sharedInstance()
-        tm.targetLangs = choosed
-        _ = tm.startTranslate()
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -119,6 +129,12 @@ class ChooseTargetLanguagesTC: UITableViewController {
             }
         }
         else {
+            if choosed.count >= MaxTranslateLanguagesOnce {
+                let av = UIAlertController(title: "Notice".localized(), message: "Only support translate \(MaxTranslateLanguagesOnce) languages in the same run.", preferredStyle: UIAlertControllerStyle.alert)
+                av.addAction(UIAlertAction(title: "Done".localized(), style: UIAlertActionStyle.cancel, handler: nil))
+                self.present(av, animated: true, completion: nil)
+                return
+            }
             choosed.append(lan)
         }
         startParedButton.isEnabled = choosed.count > 0

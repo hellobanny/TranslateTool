@@ -20,7 +20,7 @@ class ChooseSourceLanguageTC: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        self.title = "Choose source language"
+        self.title = "Choose source language".localized()
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,10 +53,10 @@ class ChooseSourceLanguageTC: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //query for confirm
         let lan = languages[indexPath.row]
-        let str = String(format:"The language of source strings file is %@ ?",arguments:[lan.getFullName()])
-        let av = UIAlertController(title: "Notice", message: str, preferredStyle: UIAlertControllerStyle.alert)
-        av.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
-        av.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { (_) in
+        let str = String(format:"The language of source file is %@?".localized(),arguments:[lan.getFullName()])
+        let av = UIAlertController(title: "Notice".localized(), message: str, preferredStyle: UIAlertControllerStyle.alert)
+        av.addAction(UIAlertAction(title: "Cancel".localized(), style: UIAlertActionStyle.cancel, handler: nil))
+        av.addAction(UIAlertAction(title: "Yes".localized(), style: UIAlertActionStyle.default, handler: { (_) in
             if let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChooseTargetLanguagesTC") as? ChooseTargetLanguagesTC {
                 TranslateManager.sharedInstance().sourceLang = lan
                 self.navigationController?.pushViewController(vc, animated: true)

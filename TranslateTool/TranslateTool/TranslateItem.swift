@@ -38,14 +38,13 @@ class TranslateItem: NSObject {
         if result != nil {
             return
         }
-        let nstr = NSString(string: translate.text).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)
-        let queryUrl = "\(GoogleTranslateURL)?key=\(GoogleAPIKey)&q=\(nstr!)&source=\(fromLang.getShortName())&target=\(toLang.getShortName())"
-        //print(queryUrl)
+        let qStr = NSString(string: translate.text).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)
+        let queryUrl = "\(GoogleTranslateURL)?key=\(GoogleAPIKey)&q=\(qStr!)&source=\(fromLang.getShortName())&target=\(toLang.getShortName())"
+        
         func actionOfFaile() {
             //失败了
-            result = "Faile! -_- " + translate.text
-            NotificationCenter.default.post(name: TranslateDone, object: nil)
-            //print(getFinalResult())
+            result = "#Error#" + translate.text
+            NotificationCenter.default.post(name: OneTranslateDone, object: self)
         }
         
         if let url = URL(string: queryUrl) {
@@ -56,8 +55,8 @@ class TranslateItem: NSObject {
                         //成功了
                         self.result = str
                         TranslateCacheManager.sharedInstance().cache(text: self.translate.text, lang: self.toLang, trans: str)
-                        NotificationCenter.default.post(name: TranslateDone, object: nil)
-                        print(self.getFinalResult())
+                        NotificationCenter.default.post(name: OneTranslateDone, object: self)
+                        //print(self.getFinalResult())
                         return
                     }
                 }

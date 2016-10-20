@@ -14,6 +14,7 @@ pod "MagicalRecord"
 pod "MagicalRecord/CocoaLumberjack"
 pod 'SwiftyJSON'
 pod 'Zip', '~> 0.6'
+pod 'SVProgressHUD'
 
 end
 
